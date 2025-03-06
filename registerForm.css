@@ -1,0 +1,89 @@
+:root{
+    --height : 10px;
+    --width : 10px;
+    --color : 5em;
+}
+
+*{
+    margin :0px;
+    padding : 0px;
+}
+
+body{
+    background-image: url('./pexels-thatguycraig000-1563356.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: content-box;
+    backdrop-filter: blur(10px);
+    display: flex;
+    height : 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.parent-container{
+    display: flex;
+    width: 30%;
+    padding : 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color : white;
+}
+
+.form-field{
+    margin-top : 20px;
+    width : 100%;
+}
+
+.form-field input{
+    width : 93%;
+    padding : 15px;
+    border : none;
+    background-color: rgba(209, 203, 203, 0.3);
+}
+
+.form-button{
+    display: flex;
+    margin-top : 10px;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+}
+
+.form-button button{
+    border-radius: 10%;
+    padding : 10px;
+    border : none;
+    /* background-color: rgb(103, 190, 75);
+    background-color: rgba(174,71,54,255); */
+    background: linear-gradient(90deg, rgba(174,71,54,255), rgb(103, 190, 75));
+    background-size: 180% 180%;
+    color : white;
+    /* animation: gradient-animation 2s ease infinite; */
+}
+
+@keyframes gradient-animation{
+      0%{
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+}
+
+@media(max-width : 1200px){
+    .parent-container{
+        width : 50%;
+    }
+}
+
+@media(max-width : 500px) {
+    .parent-container{
+        width : 70%;
+    }
+}

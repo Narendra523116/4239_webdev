@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./registerForm.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>HELLO WORLD</title>
+</head>
+<body>
+    <form class="parent-container" id="register-form">
+        <h1>Registration form</h1>
+        <!-- hello world this is me iam the GOD(USOPP) -->
+         
+            <!-- LUFFY - EMPEROR
+            ZORO - KING OF HELL
+            NAMI - CAT BURGLAR
+            USOPP(THE TOWN LIAR) - GOD
+            SANJI - BLACK FOOT
+            CHOPPER - COTTON CANDY LOVER
+            ROBIN - DEVIL'S CHILD
+            FRANKY - CYBORG
+            JIMBLE - FIRST SON OF THE SEA -->
+        
+        <div class="form-field">
+            <!-- <label for="tinput">Enter ur name 📛</label> -->
+            <input name="name" type="text" id="tname" placeholder="UserName"/>
+        </div>
+<!-- 
+        <div class="form-field">
+            <label for="temail">Enter email 📧</label>
+            <input name = "email" type="email" id="temail" placeholder="Email"/>
+        </div> -->
+
+        <div class="form-field">
+            <!-- <label for="tpass">Enter password 🔑</label> -->
+            <input name="password" type="password" id="tpass" placeholder="password"/>
+        </div>
+
+        <div class="form-button">
+            <button id="form-button">SUBMIT😁</button>
+        </div>
+
+        <script src="./index.js"></script>
+
+        <script>
+            // Wait until the DOM is fully loaded before attaching event listeners
+            document.addEventListener('DOMContentLoaded', function(event) {
+                const form = document.getElementById('register-form');
+    
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();  // Prevent the form from reloading the page
+    
+                    // Get form input values
+                    const username = document.getElementById('tname').value;
+                    const password = document.getElementById('tpass').value;
+    
+                    console.log(`Username: ${username}, Password: ${password}`);
+    
+                    // Call function to handle form submission (send POST request)
+                    handleEvent(username, password);
+                });
+            });
+    
+            // Function to handle form submission (sending POST request)
+            async function handleEvent(username, password) {
+                try {
+                    const { data } = await axios.post('http://localhost:4000/api/auth/register', {
+                        username: username,
+                        password: password
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json'  // Ensure you're sending JSON data
+                        }
+                    });
+    
+                    console.log('Response:', data);
+                } catch (error) {
+                    console.error('Error sending request:', error);
+                }
+            }
+        </script>
+
+    </form>
+</body>
+</html>

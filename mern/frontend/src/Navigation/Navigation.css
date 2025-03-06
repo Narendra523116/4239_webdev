@@ -1,0 +1,26 @@
+.link {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.link:hover {
+    background-color: white;
+    color: black;
+}
+
+
+.navbar{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgb(0, 0, 0);
+    height: 9vh;;
+}
+
+.button{
+    background-color: black;
+    border: none;
+    color: white;
+}
