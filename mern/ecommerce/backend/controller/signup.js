@@ -18,8 +18,11 @@ const signup = async(req, res)=>{
             role
         })
         console.log("signup route", newUser)
-        res.status(201).json({"message" : "user Created Succesfully"})
+        const token = await generateToken(newUser._id)
+        console.log(token)
+        res.status(201).json({"message":"User created",token,role:newUser.role})
     }catch(err){
+        console.log(err)
         res.status(500).json({"message" : "server internal error"})
     }
 }
