@@ -1,62 +1,87 @@
-const express = require("express")
-const Product = require("../models/Product")
-const { authMiddleWare, verifyAdmin } = require("../middleware/authMiddleWare")
+const express = require("express");
+const Product = require("../models/Product");
+const { authMiddleware, verifyAdmin } = require("../middleware/authMiddleware");
 
-const router = express.Router()
-router.post("/add", authMiddleWare, verifyAdmin, async (req, res)=>{
-    try{
-        console.log("iam apprearede here")
-        const {name, description, price, category, stock, imageURL} = req.body 
-        // console.log(req.body)
+const router = express.Router();
 
-        if(!name || !description || !price || !category || !stock || !imageURL){
-            return res.status(400).json({
-                message : "All the fields are needed at the time of adding products"
-            })
+// ✅ Add Product (Only Admins)
+router.post("/add", authMiddleware, verifyAdmin, async (req, res) => {
+    try {
+        const { name, description, price, category, stock, image } = req.body;
+        console.log(image)
+        if (!name || !description || !price || !category) {
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         const newProduct = new Product({
-            name, description, price, category, stock, imageURL, createdBy : req.user.id
-        })
+            name,
+            description,
+            price,
+            stock,
+            category,
+            imageUrl:image,
+            createdBy: req.user.id,
+        });
 
-        await newProduct.save()
-        return res.status(201).json({"message":"Product added successfully"})
-
-    }catch(error){
-        console.log(error)
-        res.status(500).json({error : "Internal server error"})
+        await newProduct.save();
+        res.status(201).json({ message: "Product added successfully", product: newProduct });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
-})
+});
 
-router.get("/", async(req, res)=>{
-    try{
-        const products = await Product.find()
-        res.json(products)
-    }catch(err){
-        return res.status(500).json({
-            message : "internal server error"
-        })
+// ✅ Get All Products (Anyone Can Access)
+router.get("/", async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
-})
+});
 
-router.delete("/:id", async(req, res)=>{
-    try{
-        const product = await Product.findById(res.params.id)
-        if(!product){
-            res.status(404).json({
-                message : "product not found"
-            })
-        }
-        await product.deleteOne()
-        return res.status(200).json({
-            "message" : "Product deleted suceesfully"
-        })
-    }catch(error){
-        console.log(error)
-        return res.status(500).json({
-            message : "internal server error"
-        })
+// ✅ Get Single Product by ID (Anyone Can Access)
+router.get("/:id", async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
     }
-})
+});
 
-module.exports = router
+// ✅ Update Product (Only Admins)
+router.put("/:id", authMiddleware, verifyAdmin, async (req, res) => {
+    try {
+        const { name, description, price, category, image } = req.body;
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            { name, description, price, category, image },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedProduct) return res.status(404).json({ message: "Product not found" });
+
+        res.json({ message: "Product updated successfully", product: updatedProduct });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
+
+// ✅ Delete Product (Only Admins)
+router.delete("/:id", authMiddleware, verifyAdmin, async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ message: "Product not found" });
+
+        await product.deleteOne();
+        res.json({ message: "Product deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
+
+module.exports = router;

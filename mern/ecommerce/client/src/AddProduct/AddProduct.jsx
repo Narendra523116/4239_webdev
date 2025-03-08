@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 export default function AddProduct() {
     const { user } = useContext(AuthContext)
     const navigate = useNavigate()
-    const [formData, setFormData] = useState({ name: "", description: "", price: null, category: "", stock: 0, imageURL: "" })
+    const [formData, setFormData] = useState({ name: "", description: "", price: null, category: "", stock: 0, imageUrl: "" })
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -65,7 +65,7 @@ export default function AddProduct() {
                 <div>
                     <input
                         type="text"
-                        name="imageURL"
+                        name="imageUrl"
                         placeholder='Enter product image'
                         onChange={handleChange} required />
                 </div>

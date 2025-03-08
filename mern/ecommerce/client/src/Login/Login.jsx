@@ -15,12 +15,8 @@ export default function Login() {
       .then((res)=>{
         console.log("login response",res)
         if(res.status===200){
-          setUser({
-            token:res.data.token,
-            role:res.data.role
-          })
-          localStorage.setItem("token", res.data.token)
-          localStorage.setItem("role", res.data.role)
+          setUser({token:res.data.token,role:res.data.role})
+          console.log(res.data.role)
           navigate("/")
         }
       })

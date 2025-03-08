@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const generateToken = async (userId)=>{
-    return await jwt.sign({id: userId}, process.env.JWT_SECRET, {expiresIn:'1h'})
-}
+const generateToken = (userId) => {
+    return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
 
-const validate = async (token)=>{
-    return await jwt.verify(token, process.env.JWT_SECRET)
-}
+const verifyToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET);
+};
 
-module.exports = { generateToken, validate }
+module.exports = { generateToken, verifyToken };

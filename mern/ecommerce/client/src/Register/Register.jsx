@@ -17,12 +17,8 @@ export default function Register() {
         axios.post("http://localhost:5000/api/auth/signup",formData)
             .then((res)=>{
                 console.log("response from register",res)
-                setUser({
-                    token:res.data.token,
-                    role:res.data.role
-                })
-                localStorage.setItem("token", res.data.token)
-                localStorage.setItem("role", res.data.role)
+                localStorage.setItem("token",res.data.token)
+                setUser({token:res.data.token,role:res.data.role})
                 navigate("/")
             })
             .catch((err)=>{

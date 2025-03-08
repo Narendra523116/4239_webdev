@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 export default function Home() {
   const [products,setProducts]=useState([])
   const {user}=useContext(AuthContext)
+  const navigate=useNavigate()
   useEffect(()=>{
     fetchProducts();
   },[])
@@ -19,13 +20,29 @@ export default function Home() {
         console.log("Error from home at fetching products",err)
       })
   }
-  function addCart(productId){
+  async function addCart(productId){
     console.log(productId)
+    if(!user || !user.token){
+      alert("Please log in first")
+      return 
+    }
+    try{
+      await axios.post("http://localhost:5000/api/cart/add",{productId},{
+        headers:{Authorization:`Bearer ${user.token}`}
+      })
+        .then((res)=>{
+          alert("Product added to cart")
+          navigate("/cart")
+        })
+    }
+    catch(err){
+      console.log(err)
+    }
   }
   return (
     <div>
       <h2>Products</h2>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"10px", maxWidth:"fit-content"}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:"10px"}}>
         {
           products.map((productItem)=>(
             <div key={productItem._id} style={{boxShadow:"0px 1px 4px black",padding:"10px"}}>
@@ -35,7 +52,7 @@ export default function Home() {
               <p>Stock:{productItem.stock}</p>
               <p>Category:{productItem.category}</p>
               <p>
-                <img width="30%" src={productItem.imageURL} alt={productItem.name} />
+                <img width="30%" src={productItem.imageUrl} alt={productItem.name} />
               </p>
               {user && user.role==="user"&&(
                 <button onClick={()=>addCart(productItem._id)}>Add to cart</button>

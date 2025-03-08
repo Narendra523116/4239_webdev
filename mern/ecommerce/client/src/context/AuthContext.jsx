@@ -9,8 +9,6 @@ export const AuthProvider=({children})=>{
         const role = localStorage.getItem("role")
         if(token && role){
             setUser({token,role})
-            // localStorage.setItem("token", res.data.token)
-            // localStorage.setItem("role", res.data.role)
         }
     },[])
     function logout(){
